@@ -4,37 +4,39 @@ var render = require('../../lib/template').render,
     uuid = require('../../lib/uuid'),
     sys = require('sys'),
     emitter = require('events').EventEmitter;
-	
-var msgEmitter = new emitter;
-
+    
 var users = {}, // users, position, avatar
     chatlog = [], // chat log
     updateQueue = [], // store all the responses to update for each user
+    deletedUsers = [],
     msgEmitter = new emitter,
-    updated = 0;
-
-/*
-msgEmitter.addListener('update', function() {
-    var data = {
-            users: users,
-            chatlog: chatlog
-        };
-    _.each(updateQueue, function(update){
-        update(data);
-    });
-    updateQueue = [];
-});*/
+    updated = 0,
+    session_lifetime = 600000; // 10min
 
 setInterval(function(){
+    
+    var usernames = _.keys(users),
+	now = Date.now();
+	    
+    _.each(usernames, function(username){
+	if (now >= users[username].expires) {
+	    deletedUsers.push(username);
+	    delete users[username];
+	    updated = 1;
+	}
+    });
+    
     if (updated) {
 	_.each(updateQueue, function(update){
 	    update();
 	});
 	updateQueue = [];
+	deletedUsers = [];
     }
+    
     updated = 0;
-}, 100);
-
+    
+}, 222);
 
 handlers.push({
     path: '/',
@@ -51,17 +53,26 @@ handlers.push({
     action: function() {
         var username = this.GET.username,
 	    model = this.GET.model,
-            errors = [];
-	users[username] = {
-	    username: username,
-	    position: {x:0,y:0},
-	    model: model
-        }
-        msgEmitter.emit('update');
-        var data = {
-            user: users[username],
-            errors: errors
-        }
+            error = 0,
+	    data = {};
+	if (!userExists(username)) {
+	    users[username] = {
+		username: username,
+		position: {x:0,y:0},
+		model: model,
+		expires: Math.floor((+new Date) + session_lifetime)
+	    }
+	    updated = 1;
+	    data = {
+		user: users[username],
+		error: error
+	    }
+	} else {
+	    error = "Username is taken";
+	    data = {
+		error: error
+	    }
+	}
         this.res.end(JSON.stringify(data));
     }
 });
@@ -78,6 +89,7 @@ handlers.push({
 		x: left,
 		y: top
 	    }
+	    users[username].expires = Math.floor((+new Date) + session_lifetime)
 	}
 	
 	updated = 1;
@@ -90,14 +102,17 @@ handlers.push({
     datatype: 'application/json',
     action: function() {
         var res = this.res,
-            chat_cursor = this.GET.chat_cursor;
+            chat_cursor = this.GET.chat_cursor,
+	    username = this.GET.username;
 
         updateQueue.push(
             function() {
                 var new_data = {
                     users: users,
+		    deletedUsers: deletedUsers,
                     chatlog: [],
-                    chat_cursor: chat_cursor
+                    chat_cursor: chat_cursor,
+		    exists: userExists(username)
                 }
                 new_data.chatlog = chat_cursor ? getPartialChatlog(chat_cursor) : chatlog;
                 new_data.chat_cursor = chatlog.length > 0 ? _.last(chatlog).id : 0;
@@ -117,6 +132,7 @@ handlers.push({
                 username: username,
                 msg: msg
             };
+	users[username].expires = Math.floor((+new Date) + session_lifetime)
         reduceChatlog();
         chatlog.push(message);
         updated = 1;
@@ -136,7 +152,8 @@ handlers.push({
    path: '/verifyUser',
    datatype: 'application/json',
    action: function() {
-        var valid = _.indexOf( _.map(users, function(user){ return user.username }), this.GET.username) != -1;
+	var username = this.GET.username;
+        var valid = userExists(username);
         this.res.end( JSON.stringify( {valid:valid} ) );
    }
 });
@@ -158,4 +175,8 @@ function getPartialChatlog(cursor) {
        }
     });
     return chatlog.slice(index+1);
+}
+
+function userExists(username) {
+    return _.indexOf( _.map(users, function(user){ return user.username }), username) != -1;
 }

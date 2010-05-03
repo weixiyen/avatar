@@ -123,12 +123,18 @@ UI.module('home', function(){
                 url: '/world',
                 dataType: 'json',
                 data: {
-                    chat_cursor: chat_cursor  
+                    chat_cursor: chat_cursor,
+                    username: $.cookie('username')
                 },
                 success: function(data){
-                    UI.renderWorld(data);
-                    chat_cursor = data.chat_cursor;
-                    worldPoll();
+                    if (data.exists) {
+                        UI.renderWorld(data);
+                        chat_cursor = data.chat_cursor;
+                        worldPoll();
+                    } else {
+                        $.cookie('username', null);
+                        location.reload(true);
+                    }
                 }
             });
         }
@@ -189,11 +195,11 @@ UI.module('home', function(){
                    model: $('input[name=model]:checked').val()
                },
                success: function(data){
-                    if (!data.errors.length) {
+                    if (!data.error) {
                         $.cookie('username',data.user.username,{expires:10});
                         World.show();
                     } else {
-                        alert('error');   
+                        alert(data.error);   
                     }
                },
                dataType: 'json'

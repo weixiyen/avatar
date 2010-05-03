@@ -89,6 +89,7 @@ body > .ui {
     width: 24px;
     left: 0;
     top: 0;
+    z-index: 0;
     background: no-repeat url('img/naruto-sprites.png');
     }
 .character.naruto {

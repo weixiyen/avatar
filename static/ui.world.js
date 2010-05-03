@@ -50,5 +50,9 @@ UI.renderWorld = function(world) {
         }
     });
     
+    _.each(world.deletedUsers, function(username) {
+        $('#'+username).remove(); 
+    });
+    
     UI.world_loaded = true;
 };
