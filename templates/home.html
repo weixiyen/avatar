@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="base.css">
+</head>
+<body>
+    <div id="login" class="ui">
+        <h1>Avatar chat!</h1>
+        <label for="username">Username</label> <input type="text" id="username"> <button id="enterWorld">Enter world</button>
+        
+        <div class="choose-avatar">
+            <label><input type="radio" name="model" value="naruto" checked="checked"> Naruto</label>
+            <label><input type="radio" name="model" value="sasuke"> Sasuke</label>
+            <label><input type="radio" name="model" value="sakura"> Sakura</label>
+        </div>
+    </div>
+    
+    <div id="world" class="ui">
+        <div id="chat"></div>
+        <input type="text" id="message" maxlength="255">
+        <div id="info"><div class="wrap">press [space bar] to chat &raquo;</div></div>
+        
+        <div id="characters"></div>
+    </div>
+    <script type="text/javascript" src="/jquery.js"></script>
+    <script type="text/javascript" src="/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/underscore.js"></script>
+    <script type="text/javascript" src="/ui.js"></script>
+    <script type="text/javascript" src="/ui.world.js"></script>
+    <script type="text/javascript" src="/ui.character.js"></script>
+    <script type="text/javascript" src="/page.home.js"></script>
+    <script type="text/javascript">UI.render('home');</script>
+</body>
+</html>

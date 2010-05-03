@@ -1,0 +1,102 @@
+body {
+    background: #efefef;
+    font: 12px "Trebuchet MS";
+    border: 0;
+    margin: 0;
+    padding: 0;
+    }
+body.on {
+    background: url('img/bg.png');    
+    }
+body > .ui {
+    display: none;    
+    }
+#login {
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 400px;
+    text-align: center;
+    padding: 20px 20px 40px 20px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    background: #333;
+    border: 10px solid #fff;
+    color:#fff;
+    }
+#login h1 {
+    padding-bottom: 20px;
+    }
+#world {
+    background: #A9D041;
+    }
+#chat {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    background: #fff;
+    overflow: auto;
+    overflow-x: hidden;
+    z-index: 20000;
+    }
+#chat div {
+    padding: 0 0 5px 15px;
+    }
+#chat div.first {
+    padding: 0 0 0 5px;    
+    }
+#chat b {
+    border-top: 1px solid #eee;
+    display: block;
+    padding: 5px 0 5px 0;
+    }
+#message {
+    color: #fff;
+    background: #222;
+    border: 0;
+    height: 40px;
+    font: 18px "Trebuchet MS";
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 30000;
+    }
+#message.on {
+    background: #000;
+    color: #00DE01;
+    }
+#info {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    height: 42px;
+    background-color:rgba(0,0,0,0.8);
+    color: #ccc;
+    font: bold 16px "Trebuchet MS";
+    z-index:30000;
+    }
+#info > .wrap {
+    padding: 12px 10px 0 10px;    
+    }
+#characters {
+    position: fixed;    
+    }
+.character {
+    position: fixed;
+    height: 32px;
+    width: 24px;
+    left: 0;
+    top: 0;
+    background: no-repeat url('img/naruto-sprites.png');
+    }
+.character.naruto {
+    background-position: -168px -64px;
+    }
+.character.sasuke {
+    background-position: -96px -64px;
+    }
+.character.sakura {
+    background-position: -24px -64px;
+    }
