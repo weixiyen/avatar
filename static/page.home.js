@@ -17,7 +17,8 @@ UI.module('home', function(){
     // ------------------------------------------------------
     
     var polling = false,
-        chat_cursor = 0;
+        chat_cursor = 0,
+        poll_timer = 100;
         
     var World = {
         show: function(){
@@ -126,11 +127,16 @@ UI.module('home', function(){
                     chat_cursor: chat_cursor,
                     username: $.cookie('username')
                 },
+                error: function(){
+                    poll_timer = poll_timer > 60000 ? 100 : poll_timer*2;
+                    setTimeout(worldPoll, poll_timer);
+                },
                 success: function(data){
                     if (data.exists) {
                         UI.renderWorld(data);
                         chat_cursor = data.chat_cursor;
-                        worldPoll();
+                        poll_timer = 100;
+                        setTimeout(worldPoll, poll_timer);
                     } else {
                         $.cookie('username', null);
                         location.reload(true);
