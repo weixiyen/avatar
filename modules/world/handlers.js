@@ -11,9 +11,7 @@ var users = {}, // users, position, avatar
     deletedUsers = [],
     msgEmitter = new emitter,
     updated = 0,
-    session_lifetime = 600000, // 10min
-    push_return_limit = 30000,
-    push_timer = 0;
+    session_lifetime = 600000; // 10min
 
 setInterval(function(){
     
@@ -28,17 +26,14 @@ setInterval(function(){
 	}
     });
     
-    if (updated || push_timer > push_return_limit ) {
+    if (updated) {
 	_.each(updateQueue, function(update){
 	    update();
 	});
 	updateQueue = [];
 	deletedUsers = [];
-	push_timer = 0;
 	updated = 0;
-    } else {
-	push_timer += 222;
-    }
+    } 
     
 }, 222);
 
