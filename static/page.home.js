@@ -17,8 +17,7 @@ UI.module('home', function(){
     // ------------------------------------------------------
     
     var polling = false,
-        chat_cursor = 0,
-        poll_timer = 100;
+        chat_cursor = 0;
         
     var World = {
         show: function(){
@@ -128,15 +127,15 @@ UI.module('home', function(){
                     username: $.cookie('username')
                 },
                 error: function(){
-                    poll_timer = poll_timer > 60000 ? 100 : poll_timer*2;
-                    setTimeout(worldPoll, poll_timer);
+                    setTimeout(worldPoll, 15000);
                 },
+                timeout: 50000,
+                cache: false,
                 success: function(data){
                     if (data.exists) {
                         UI.renderWorld(data);
                         chat_cursor = data.chat_cursor;
-                        poll_timer = 100;
-                        setTimeout(worldPoll, poll_timer);
+                        setTimeout(worldPoll, 200);
                     } else {
                         $.cookie('username', null);
                         location.reload(true);
