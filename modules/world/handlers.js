@@ -54,7 +54,8 @@ handlers.push({
 	    model = this.GET.model,
             error = 0,
 	    data = {};
-	if (!userExists(username)) {
+	if (!userExists(username) && /^[a-zA-Z0-9]+$/.test(username)) {
+	    sys.puts('valid');
 	    users[username] = {
 		username: username,
 		position: {x:0,y:0},
@@ -67,7 +68,7 @@ handlers.push({
 		error: error
 	    }
 	} else {
-	    error = "Username is taken";
+	    error = "Username is not valid format (alphanumeric) or it's being used.";
 	    data = {
 		error: error
 	    }
