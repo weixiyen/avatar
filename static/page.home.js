@@ -127,7 +127,7 @@ UI.module('home', function(){
                     username: $.cookie('username')
                 },
                 error: function(){
-                    setTimeout(worldPoll, 15000);
+                    setTimeout(worldPoll, 2000);
                 },
                 timeout: 50000,
                 cache: false,
