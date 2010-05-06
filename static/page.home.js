@@ -3,7 +3,7 @@ UI.module('home', function(){
     var me;
     
     function init() {
-        if ( $.cookie('username') && verifyUser( $.cookie('username') ) ) {
+        if ( $.cookie('uid') && verifyUser( $.cookie('uid') ) ) {
             World.show();
         } else {
             showLogin();
@@ -25,7 +25,7 @@ UI.module('home', function(){
             
             $('#login').hide();
             $('#world').slideDown('fast', function(){
-                 $('#chat-name').html($.cookie('username') + ' &raquo;');
+                 $('#chat-name').html($.cookie('uid') + ' &raquo;');
                  self.playMode();
             });
             resizeChat();
@@ -73,16 +73,16 @@ UI.module('home', function(){
                     return false;
                     break;
                 case 37:
-                    UI.Character.move($.cookie('username'), 'left');
+                    UI.Character.move($.cookie('uid'), 'left');
                     break;
                 case 38:
-                    UI.Character.move($.cookie('username'), 'up');
+                    UI.Character.move($.cookie('uid'), 'up');
                     break;
                 case 39:
-                    UI.Character.move($.cookie('username'), 'right');
+                    UI.Character.move($.cookie('uid'), 'right');
                     break;
                 case 40:
-                    UI.Character.move($.cookie('username'), 'down');
+                    UI.Character.move($.cookie('uid'), 'down');
                     break;
                 case 27:
                     return false;
@@ -94,16 +94,16 @@ UI.module('home', function(){
         }).bind('keyup',function(e){
             switch(e.which) {
                 case 37:
-                    UI.Character.stop($.cookie('username'),'left');
+                    UI.Character.stop($.cookie('uid'),'left');
                     break;
                 case 38:
-                    UI.Character.stop($.cookie('username'),'up');
+                    UI.Character.stop($.cookie('uid'),'up');
                     break;
                 case 39:
-                    UI.Character.stop($.cookie('username'),'right');
+                    UI.Character.stop($.cookie('uid'),'right');
                     break;
                 case 40:
-                    UI.Character.stop($.cookie('username'),'down');
+                    UI.Character.stop($.cookie('uid'),'down');
                     break;
                 default:
                     break;
@@ -124,7 +124,7 @@ UI.module('home', function(){
                 dataType: 'json',
                 data: {
                     chat_cursor: chat_cursor,
-                    username: $.cookie('username')
+                    uid: $.cookie('uid')
                 },
                 error: function(){
                     setTimeout(worldPoll, 2000);
@@ -137,7 +137,7 @@ UI.module('home', function(){
                         chat_cursor = data.chat_cursor;
                         setTimeout(worldPoll, 200);
                     } else {
-                        $.cookie('username', null);
+                        $.cookie('uid', null);
                         location.reload(true);
                     }
                 }
@@ -149,7 +149,7 @@ UI.module('home', function(){
         $.ajax({
             url: '/sendMessage',
             data: {
-                username: $.cookie('username'),
+                uid: $.cookie('uid'),
                 msg: msg
             },
             error: function(){
@@ -170,13 +170,13 @@ UI.module('home', function(){
         });
     }
     
-    function verifyUser(username) {
+    function verifyUser(uid) {
         var valid = false;
         $.ajax({
             url: '/verifyUser',
             async: false,
             data: {
-                username: username
+                uid: uid
             },
             success: function(user) {
                 valid = user.valid;
@@ -201,7 +201,7 @@ UI.module('home', function(){
                },
                success: function(data){
                     if (!data.error) {
-                        $.cookie('username',data.user.username,{expires:10});
+                        $.cookie('uid',data.user.uid,{expires:10});
                         World.show();
                     } else {
                         alert(data.error);   

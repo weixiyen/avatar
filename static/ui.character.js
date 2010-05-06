@@ -94,7 +94,7 @@
         $.ajax({
             url: '/updatePosition',
             data: {
-                username: el,
+                uid: el,
                 top: parseInt(me.css('top')),
                 left: parseInt(me.css('left'))
             }
@@ -170,11 +170,11 @@
         }
     }
     
-    UI.Character.walk = function(username, direction){
+    UI.Character.walk = function(uid, direction){
         var i = 0;
-        var model = $('#'+username).attr('rel');        
-        UI.Character.walkloop[username] = setInterval(function(){
-            $('#'+username).css({
+        var model = $('#'+uid).attr('rel');        
+        UI.Character.walkloop[uid] = setInterval(function(){
+            $('#'+uid).css({
                 'background-position': UI.Character.sprite_map[model][direction][i].l + ' ' + UI.Character.sprite_map[model][direction][i].t
             });
             if (++i===3) i = 0;

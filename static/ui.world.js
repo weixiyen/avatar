@@ -1,57 +1,57 @@
 UI.renderWorld = function(world) {
     var html = [],
-        prev_username = $('#chat > div:last').attr('rel');
+        prev_uid = $('#chat > div:last').attr('rel');
     
     _.each(world.chatlog, function(chat) {
-        if (prev_username === chat.username) {
-            html.push('<div rel="'+chat.username+'">'+chat.msg+'</div>');
+        if (prev_uid === chat.uid) {
+            html.push('<div rel="'+chat.uid+'">'+chat.msg+'</div>');
         } else {
-            html.push('<div class="first" rel="'+chat.username+'"><b>'+chat.username+' &raquo; </b></div><div rel="'+chat.username+'">'+chat.msg+'</div>');
+            html.push('<div class="first" rel="'+chat.uid+'"><b>'+world.users[chat.uid].username+' &raquo; </b></div><div rel="'+chat.uid+'">'+chat.msg+'</div>');
         }
-        prev_username = chat.username;
+        prev_uid = chat.uid;
     });
     
     $('#chat').append(html.join('')).animate({ scrollTop: $('#chat').attr("scrollHeight") - $('#chat').height() }, 200);
     
-    var usernames = _.keys(world.users);
+    var userids = _.keys(world.users);
     
-    _.each(usernames, function(username,i) {
-        var user_left = parseInt($('#'+username).css('left')),
-            user_top = parseInt($('#'+username).css('top'));
+    _.each(userids, function(uid,i) {
+        var user_left = parseInt($('#'+uid).css('left')),
+            user_top = parseInt($('#'+uid).css('top'));
             
-        if (!$('#'+username).attr('id')) {
-            $('#characters').append('<div id="'+username+'" title="'+username+'" class="character '+world.users[username].model+'" rel="'+world.users[username].model+'"></div>');
+        if (!$('#'+uid).attr('id')) {
+            $('#characters').append('<div id="'+uid+'" title="'+world.users[uid].username+'" class="character '+world.users[uid].model+'" rel="'+world.users[uid].model+'"></div>');
         }
         if (UI.world_loaded) {
-            if (username != $.cookie('username')) {
-                if (user_left !== world.users[username].position.x || user_top !== world.users[username].position.y){
-                    clearInterval(UI.Character.walkloop[username]);
-                    UI.Character.walk(username, UI.Character.getDirection(user_left, user_top, world.users[username].position.x, world.users[username].position.y));
-                    $('#'+username).animate({
-                        left: world.users[username].position.x,
-                        top: world.users[username].position.y,
-                        'z-index': world.users[username].position.y
+            if (uid != $.cookie('uid')) {
+                if (user_left !== world.users[uid].position.x || user_top !== world.users[uid].position.y){
+                    clearInterval(UI.Character.walkloop[uid]);
+                    UI.Character.walk(uid, UI.Character.getDirection(user_left, user_top, world.users[uid].position.x, world.users[uid].position.y));
+                    $('#'+uid).animate({
+                        left: world.users[uid].position.x,
+                        top: world.users[uid].position.y,
+                        'z-index': world.users[uid].position.y
                         }, {
                         duration: 1000, 
                         easing: 'linear',
                         queue: false,
                         complete: function(){
-                            clearInterval(UI.Character.walkloop[username]);
+                            clearInterval(UI.Character.walkloop[uid]);
                         }
                     });
                 }
             }
         } else {
-            $('#'+username).css({
-                left: world.users[username].position.x,
-                top: world.users[username].position.y,
-                'z-index': world.users[username].position.y
+            $('#'+uid).css({
+                left: world.users[uid].position.x,
+                top: world.users[uid].position.y,
+                'z-index': world.users[uid].position.y
             });
         }
     });
     
-    _.each(world.deletedUsers, function(username) {
-        $('#'+username).remove(); 
+    _.each(world.deletedUsers, function(uid) {
+        $('#'+uid).remove(); 
     });
     
     UI.world_loaded = true;
