@@ -55,24 +55,18 @@ handlers.push({
             error = 0,
 	    uid = uuid.create(),
 	    data = {};
-	if (/^[a-zA-Z0-9]+$/.test(username)) {
-	    users[uid] = {
-		uid: uid,
-		username: username,
-		position: {x:0,y:0},
-		model: model,
-		expires: Math.floor((+new Date) + session_lifetime)
-	    }
-	    updated = 1;
-	    data = {
-		user: users[uid],
-		error: error
-	    }
-	} else {
-	    error = "Username is not valid format (alphanumeric) or it's being used.";
-	    data = {
-		error: error
-	    }
+	
+	users[uid] = {
+	    uid: uid,
+	    username: username,
+	    position: {x:0,y:0},
+	    model: model,
+	    expires: Math.floor((+new Date) + session_lifetime)
+	}
+	updated = 1;
+	data = {
+	    user: users[uid],
+	    error: error
 	}
         this.res.end(JSON.stringify(data));
     }
