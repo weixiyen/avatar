@@ -6,7 +6,7 @@ UI.renderWorld = function(world) {
         if (prev_uid === chat.uid) {
             html.push('<div rel="'+chat.uid+'">'+chat.msg+'</div>');
         } else {
-            html.push('<div class="first" rel="'+chat.uid+'"><b>'+world.users[chat.uid].username+' &raquo; </b></div><div rel="'+chat.uid+'">'+chat.msg+'</div>');
+            html.push('<div class="first" rel="'+chat.uid+'"><b>'+chat.username+' &raquo; </b></div><div rel="'+chat.uid+'">'+chat.msg+'</div>');
         }
         prev_uid = chat.uid;
     });

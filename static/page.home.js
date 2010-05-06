@@ -138,6 +138,7 @@ UI.module('home', function(){
                         setTimeout(worldPoll, 200);
                     } else {
                         $.cookie('uid', null);
+                        $.cookie('username', null);
                         location.reload(true);
                     }
                 }
@@ -150,7 +151,8 @@ UI.module('home', function(){
             url: '/sendMessage',
             data: {
                 uid: $.cookie('uid'),
-                msg: msg
+                msg: msg,
+                username: $.cookie('username')
             },
             error: function(){
                 worldPoll()
@@ -202,6 +204,7 @@ UI.module('home', function(){
                success: function(data){
                     if (!data.error) {
                         $.cookie('uid',data.user.uid,{expires:10});
+                        $.cookie('username',data.user.username,{expires:10});
                         World.show();
                     } else {
                         alert(data.error);   

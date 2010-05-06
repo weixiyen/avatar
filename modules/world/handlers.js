@@ -122,10 +122,12 @@ handlers.push({
    action: function() {
         var uid = this.GET.uid,
             msg = this.GET.msg,
+	    username = this.GET.username,
             message = {
                 id: uuid.create(),
                 uid: uid,
-                msg: msg
+                msg: msg,
+		username: username
             };
 	users[uid].expires = Math.floor((+new Date) + session_lifetime)
         reduceChatlog();
