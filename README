@@ -1,3 +1,10 @@
 node web.js
 
 go to localhost:5001
+
+DESCRIPTION:
+
+Comet long-polling interface for naruto sprites to walk around.  
+Open up different browsers to see multiple characters.
+No database, all objects in-memory.
+Chat also provided, similar to Tornado's chat demo using cursor technique.
