@@ -129,7 +129,9 @@ handlers.push({
                 msg: msg,
 		username: username
             };
-	users[uid].expires = Math.floor((+new Date) + session_lifetime)
+	if (users[uid]) {
+	    users[uid].expires = Math.floor((+new Date) + session_lifetime)
+	}
         reduceChatlog();
         chatlog.push(message);
         updated = 1;
