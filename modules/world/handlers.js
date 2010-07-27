@@ -59,7 +59,7 @@ handlers.push({
 	users[uid] = {
 	    uid: uid,
 	    username: username,
-	    position: {x:0,y:0},
+	    position: {x:200,y:200},
 	    model: model,
 	    expires: Math.floor((+new Date) + session_lifetime)
 	}
