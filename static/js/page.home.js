@@ -151,7 +151,7 @@ UI.module('home', function(){
             url: '/sendMessage',
             data: {
                 uid: $.cookie('uid'),
-                msg: msg.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
+                msg: msg,
                 username: $.cookie('username')
             },
             error: function(){

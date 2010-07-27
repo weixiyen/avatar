@@ -121,7 +121,7 @@ handlers.push({
    path: '/sendMessage',
    action: function() {
         var uid = this.GET.uid,
-            msg = this.GET.msg,
+            msg = this.GET.msg.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"),
 	    username = this.GET.username,
             message = {
                 id: uuid.create(),
